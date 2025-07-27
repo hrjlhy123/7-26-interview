@@ -14,7 +14,7 @@ function ToDoPage() {
     // Fetch tasks from the server
     const fetchTasks = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/tasks', {
+            const res = await fetch('/api/tasks', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             if (!res.ok) throw new Error();
