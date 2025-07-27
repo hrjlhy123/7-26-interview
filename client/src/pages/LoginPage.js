@@ -105,7 +105,7 @@ function LoginPage() {
                   className="btn btn-link"
                   onClick={() => navigate('/register')}
                 >
-                  Don&apos;t have an account? Register here
+                  Don&apos;t have an account?
                 </button>
               </div>
             </form>
