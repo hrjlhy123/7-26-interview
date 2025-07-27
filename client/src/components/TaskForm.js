@@ -4,15 +4,17 @@ import React, { useState, useEffect } from 'react';
 function TaskForm({ onSubmit, initialValue, editing }) {
   const [input, setInput] = useState('');
 
+  // Set input value when editing an existing task
   useEffect(() => {
     setInput(initialValue || '');
   }, [initialValue]);
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!input.trim()) return;
-    onSubmit(input);
-    setInput('');
+    if (!input.trim()) return; // Ignore empty input
+    onSubmit(input);           // Pass input to parent
+    setInput('');              // Clear input after submit
   };
 
   return (

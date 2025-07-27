@@ -10,36 +10,39 @@ let token;
 let user;
 
 beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URI);
+  await mongoose.connect(process.env.MONGO_URI);
 
-    user = new User({
-        username: 'test',
-        email: `test_${Date.now()}@example.com`,
-        password: '123456'
-    });
-    await user.save();
+  // Create a test user
+  user = new User({
+    username: 'test',
+    email: `test_${Date.now()}@example.com`,
+    password: '123456',
+  });
+  await user.save();
 
-    token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  // Generate JWT for the test user
+  token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 });
 
 afterAll(async () => {
-    const testUsers = await User.find({ email: /test_/ }, '_id');
-    const testUserIds = testUsers.map(u => u._id);
+  // Clean up test users and their tasks
+  const testUsers = await User.find({ email: /test_/ }, '_id');
+  const testUserIds = testUsers.map((u) => u._id);
 
-    await Task.deleteMany({ user: { $in: testUserIds } }); // ✅ 用的是同一个 Task 实例
-    await User.deleteMany({ _id: { $in: testUserIds } });
+  await Task.deleteMany({ user: { $in: testUserIds } }); // Clear tasks created by test users
+  await User.deleteMany({ _id: { $in: testUserIds } });
 
-    await mongoose.connection.close();
+  await mongoose.connection.close();
 });
 
 describe('POST /api/tasks', () => {
-    it('should create a new task', async () => {
-        const res = await request(app)
-            .post('/api/tasks')
-            .set('Authorization', `Bearer ${token}`)
-            .send({ text: 'Test Task', user: user._id });
+  it('should create a new task', async () => {
+    const res = await request(app)
+      .post('/api/tasks')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ text: 'Test Task', user: user._id });
 
-        expect(res.statusCode).toBe(201); // ✅ 接口逻辑是返回 201
-        expect(res.body.text).toBe('Test Task');
-    });
+    expect(res.statusCode).toBe(201); // 201 Created
+    expect(res.body.text).toBe('Test Task');
+  });
 });

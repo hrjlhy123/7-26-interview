@@ -18,7 +18,7 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors([]); // 每次提交先清空之前错误
+    setErrors([]); // Clear previous errors on submit
 
     try {
       const res = await fetch('http://localhost:5000/api/login', {
@@ -30,16 +30,16 @@ function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        // 后端验证字段错误（来自 express-validator）
+        // Handle validation errors returned by backend (e.g. express-validator)
         if (data.errors) {
-          setErrors(data.errors); // 每个 error 应该是 { msg: string }
+          setErrors(data.errors); // Array of { msg: string }
         } else {
           setErrors([{ msg: data.message || 'Login failed' }]);
         }
         return;
       }
 
-      // 登录成功
+      // On successful login
       localStorage.setItem('token', data.token);
       dispatch(loginUser(data.user));
       navigate('/tasks');
@@ -53,7 +53,7 @@ function LoginPage() {
     <div className="container mt-5">
       <h2>Login</h2>
 
-      {/* 🔴 显示错误信息 */}
+      {/* Display error messages */}
       {errors.length > 0 && (
         <div className="alert alert-danger">
           <ul className="mb-0">

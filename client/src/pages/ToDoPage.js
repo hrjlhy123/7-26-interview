@@ -7,10 +7,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function ToDoPage() {
     const [tasks, setTasks] = useState([]);
     const [editTask, setEditTask] = useState(null);
-    const [error, setError] = useState(null); // ⬅️ 新增
+    const [error, setError] = useState(null); // Handle error display
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
+    // Fetch tasks from the server
     const fetchTasks = async () => {
         try {
             const res = await fetch('http://localhost:5000/api/tasks', {
@@ -20,11 +21,12 @@ function ToDoPage() {
             const data = await res.json();
             setTasks(data);
         } catch (err) {
-            console.error('获取任务失败:', err);
+            console.error('Failed to fetch tasks:', err);
             setError('Failed to load tasks.');
         }
     };
 
+    // Run on component mount
     useEffect(() => {
         if (!token) {
             navigate('/');
@@ -33,11 +35,13 @@ function ToDoPage() {
         fetchTasks();
     }, []);
 
+    // Logout and redirect to login
     const handleLogout = () => {
         localStorage.removeItem('token');
         navigate('/');
     };
 
+    // Add or update a task
     const handleTaskSubmit = async (text) => {
         try {
             if (editTask) {
@@ -67,15 +71,17 @@ function ToDoPage() {
                 setTasks((prev) => [newTask, ...prev]);
             }
         } catch (err) {
-            console.error('提交任务失败:', err);
+            console.error('Failed to submit task:', err);
             setError(editTask ? 'Failed to update task.' : 'Failed to add task.');
         }
     };
 
+    // Set task to be edited
     const handleEdit = (task) => {
         setEditTask(task);
     };
 
+    // Delete task by ID
     const handleDelete = async (id) => {
         try {
             const res = await fetch(`http://localhost:5000/api/tasks/${id}`, {
@@ -85,7 +91,7 @@ function ToDoPage() {
             if (!res.ok) throw new Error();
             setTasks((prev) => prev.filter((t) => t._id !== id));
         } catch (err) {
-            console.error('删除任务失败:', err);
+            console.error('Failed to delete task:', err);
             setError('Failed to delete task.');
         }
     };
@@ -99,7 +105,7 @@ function ToDoPage() {
                 </button>
             </h2>
 
-            {/* 🔴 显示错误 */}
+            {/* Error alert box */}
             {error && (
                 <div className="alert alert-danger" role="alert">
                     {error}
@@ -112,7 +118,7 @@ function ToDoPage() {
                 editing={!!editTask}
             />
 
-            {/* 任务列表 */}
+            {/* Task list */}
             <ul className="list-group">
                 {tasks.map((task) => (
                     <li key={task._id} className="list-group-item d-flex justify-content-between">

@@ -5,20 +5,20 @@ import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// 所有任务接口都需要验证用户身份
+// Apply authentication middleware to all task routes
 router.use(authMiddleware);
 
-// 获取当前用户的所有任务
+// Get all tasks for the authenticated user
 router.get('/', async (req, res, next) => {
   try {
     const tasks = await Task.find({ user: req.userId }).sort({ createdAt: -1 });
     res.json(tasks);
   } catch (err) {
-    next(err); // ✅ 交给统一错误处理中间件
+    next(err); // Forward to centralized error handler
   }
 });
 
-// 添加新任务
+// Create a new task
 router.post('/', async (req, res, next) => {
   try {
     const { text } = req.body;
@@ -40,7 +40,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-// 更新任务
+// Update an existing task
 router.put('/:id', async (req, res, next) => {
   try {
     const task = await Task.findOne({ _id: req.params.id, user: req.userId });
@@ -60,7 +60,7 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 
-// 删除任务
+// Delete a task
 router.delete('/:id', async (req, res, next) => {
   try {
     const deleted = await Task.findOneAndDelete({ _id: req.params.id, user: req.userId });

@@ -11,11 +11,11 @@ import { errorHandler } from './middleware/errorHandler.js';
 dotenv.config();
 const app = express();
 
-// Middleware
+// Global middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// Route handlers
 app.use('/api', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
@@ -27,6 +27,7 @@ mongoose.connect(process.env.MONGO_URI)
   })
   .catch(err => console.error('❌ MongoDB connection error:', err));
 
+// Centralized error handler
 app.use(errorHandler);
 
-export default app; 
+export default app;

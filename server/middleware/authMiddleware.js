@@ -7,7 +7,7 @@ dotenv.config();
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  // 检查是否有 Authorization 头并以 Bearer 开头
+  // Check if Authorization header exists and starts with 'Bearer '
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ message: 'No token provided' });
   }
@@ -16,7 +16,7 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.userId;  // 设置 req.userId 供后续使用
+    req.userId = decoded.userId; // Attach userId to request object for downstream use
     next();
   } catch (err) {
     return res.status(401).json({ message: 'Invalid or expired token' });

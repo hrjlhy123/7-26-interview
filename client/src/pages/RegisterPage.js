@@ -18,7 +18,7 @@ function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors([]); // 清空旧错误
+    setErrors([]); // Reset previous errors
 
     try {
       const res = await fetch('http://localhost:5000/api/register', {
@@ -30,19 +30,20 @@ function RegisterPage() {
       const data = await res.json();
 
       if (!res.ok) {
+        // Handle validation errors returned by backend
         if (data.errors) {
-          setErrors(data.errors); // express-validator 的字段错误
+          setErrors(data.errors);
         } else {
           setErrors([{ msg: data.message || 'Registration failed' }]);
         }
         return;
       }
 
-      // 注册成功
+      // Registration successful
       setForm({ username: '', email: '', password: '' });
       setErrors([]);
       alert('Registration successful!');
-      navigate('/'); // 自动跳转到登录页
+      navigate('/'); // Redirect to login
     } catch (err) {
       console.error('Register error:', err);
       setErrors([{ msg: 'Something went wrong. Please try again.' }]);
@@ -53,7 +54,7 @@ function RegisterPage() {
     <div className="container mt-5">
       <h2>Sign Up</h2>
 
-      {/* 🔴 展示错误 */}
+      {/* Display error messages */}
       {errors.length > 0 && (
         <div className="alert alert-danger">
           <ul className="mb-0">

@@ -13,11 +13,11 @@ const taskSchema = new mongoose.Schema({
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',      // 关联到 User 模型
+    ref: 'User',      // Reference to the User model
     required: true,
   },
 }, {
-  timestamps: true
+  timestamps: true  // Automatically adds createdAt and updatedAt
 });
 
 const Task = mongoose.model('Task', taskSchema);

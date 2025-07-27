@@ -23,13 +23,12 @@ const userSchema = new mongoose.Schema({
     minlength: 6,
   },
 }, {
-  timestamps: true
+  timestamps: true, // Automatically adds createdAt and updatedAt
 });
 
-// 在保存前自动加密密码
+// Hash the password before saving the user document
 userSchema.pre('save', async function (next) {
   const user = this;
-
   if (!user.isModified('password')) return next();
 
   try {
@@ -41,7 +40,7 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-// 添加密码验证方法
+// Add method to compare plain password with hashed password
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
