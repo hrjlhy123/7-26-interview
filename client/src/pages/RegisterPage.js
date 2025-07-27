@@ -1,5 +1,5 @@
 // src/pages/RegisterPage.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -51,59 +51,78 @@ function RegisterPage() {
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Sign Up</h2>
+    <div className="container-sm mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card shadow-sm p-4">
+            <h2 className="mb-4 text-center">Sign Up</h2>
 
-      {/* Display error messages */}
-      {errors.length > 0 && (
-        <div className="alert alert-danger">
-          <ul className="mb-0">
-            {errors.map((err, idx) => (
-              <li key={idx}>{err.msg}</li>
-            ))}
-          </ul>
+            {errors.length > 0 && (
+              <div className="alert alert-danger">
+                <ul className="mb-0">
+                  {errors.map((err, idx) => (
+                    <li key={idx}>{err.msg}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label className="form-label">Email address</label>
+                <input
+                  type="email"
+                  name="email"
+                  className="form-control"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              
+              <div className="mb-3">
+                <label className="form-label">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  className="form-control"
+                  value={form.username}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  className="form-control"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="d-grid">
+                <button type="submit" className="btn btn-primary">
+                  Register
+                </button>
+              </div>
+
+              <div className="text-center mt-3">
+                <button
+                  type="button"
+                  className="btn btn-link"
+                  onClick={() => navigate('/')}
+                >
+                  Already have an account? Login here
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="mt-4">
-        <div className="mb-3">
-          <label className="form-label">Username</label>
-          <input
-            type="text"
-            name="username"
-            className="form-control"
-            value={form.username}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Email address</label>
-          <input
-            type="email"
-            name="email"
-            className="form-control"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Password</label>
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary">Register</button>
-      </form>
+      </div>
     </div>
   );
 }

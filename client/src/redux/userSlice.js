@@ -8,11 +8,11 @@ const userSlice = createSlice({
   },
   reducers: {
     registerUser: (state, action) => {
-      console.log('Redux注册:', action.payload);
+      console.log('Redux register:', action.payload);
       state.currentUser = action.payload;
     },
     loginUser: (state, action) => {
-      console.log('Redux登录:', action.payload);
+      console.log('Redux login:', action.payload);
       state.currentUser = action.payload;
     },
   },

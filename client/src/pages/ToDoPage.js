@@ -1,5 +1,5 @@
 // src/pages/ToDoPage.js
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import TaskForm from '../components/TaskForm';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,12 +34,6 @@ function ToDoPage() {
         }
         fetchTasks();
     }, []);
-
-    // Logout and redirect to login
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/');
-    };
 
     // Add or update a task
     const handleTaskSubmit = async (text) => {
@@ -98,30 +92,30 @@ function ToDoPage() {
 
     return (
         <div className="container mt-5">
-            <h2>
-                <span>To-Do List</span>
-                <button className="btn btn-outline-secondary" onClick={handleLogout}>
-                    Logout
-                </button>
-            </h2>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h2 className="mb-0">📝 To-Do List</h2>
+            </div>
 
-            {/* Error alert box */}
             {error && (
                 <div className="alert alert-danger" role="alert">
                     {error}
                 </div>
             )}
 
-            <TaskForm
-                onSubmit={handleTaskSubmit}
-                initialValue={editTask ? editTask.text : ''}
-                editing={!!editTask}
-            />
+            <div className="card p-4 mb-4 shadow-sm">
+                <TaskForm
+                    onSubmit={handleTaskSubmit}
+                    initialValue={editTask ? editTask.text : ''}
+                    editing={!!editTask}
+                />
+            </div>
 
-            {/* Task list */}
-            <ul className="list-group">
+            <ul className="list-group shadow-sm">
                 {tasks.map((task) => (
-                    <li key={task._id} className="list-group-item d-flex justify-content-between">
+                    <li
+                        key={task._id}
+                        className="list-group-item d-flex justify-content-between align-items-center"
+                    >
                         <span>{task.text}</span>
                         <div>
                             <button
