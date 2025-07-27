@@ -24,7 +24,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <Router basename={process.env.NODE_ENV === 'production' ? '/7-26-interview' : ''}>
       <Layout>
         <Routes>
           <Route path="/" element={<LoginPage />} />

@@ -39,7 +39,7 @@ function ToDoPage() {
     const handleTaskSubmit = async (text) => {
         try {
             if (editTask) {
-                const res = await fetch(`http://localhost:5000/api/tasks/${editTask._id}`, {
+                const res = await fetch(`/api/tasks/${editTask._id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ function ToDoPage() {
                 setTasks((prev) => prev.map((t) => (t._id === updated._id ? updated : t)));
                 setEditTask(null);
             } else {
-                const res = await fetch('http://localhost:5000/api/tasks', {
+                const res = await fetch('/api/tasks', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ function ToDoPage() {
     // Delete task by ID
     const handleDelete = async (id) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+            const res = await fetch(`/api/tasks/${id}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` },
             });
