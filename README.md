@@ -122,7 +122,7 @@ server/ # Back-end (Node.js + Express)
 
 **Jack Hao**  
 📧 [haoruojie@cityuniversity.edu](mailto:haoruojie@cityuniversity.edu)  
-🔗 [LinkedIn](https://www.linkedin.com/in/hrjlhy) (if available)
+🔗 [LinkedIn](https://www.linkedin.com/in/hrjlhy)
 
 ---
 
